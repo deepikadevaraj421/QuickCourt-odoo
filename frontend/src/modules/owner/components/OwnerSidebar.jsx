@@ -1,6 +1,7 @@
 import React from 'react';
 import { BarChart3, Building2, CalendarRange, CreditCard, LayoutDashboard, LogOut, MessageSquareQuote, Bell, UserCircle2, Trophy, MapPinned } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
+import { useLogout } from '../../../auth/hooks/useLogout';
 
 const navItems = [
     { label: 'Dashboard', path: '/owner/dashboard', icon: LayoutDashboard },
@@ -16,6 +17,7 @@ const navItems = [
 ];
 
 export default function OwnerSidebar({ profile, unreadCount = 0 }) {
+    const logout = useLogout();
     return (
         <aside className="w-full md:w-72 bg-slate-950 text-slate-100 min-h-screen border-r border-slate-800 flex flex-col">
             <div className="px-6 py-7 border-b border-slate-800 flex items-center gap-3">
@@ -48,7 +50,7 @@ export default function OwnerSidebar({ profile, unreadCount = 0 }) {
                         <div className="font-bold text-sm truncate">{profile?.name || 'Lina'}</div>
                         <div className="text-[11px] text-slate-400">Facility Owner</div>
                     </div>
-                    <button className="ml-auto p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800" aria-label="Logout">
+                    <button type="button" onClick={logout} className="ml-auto p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800" aria-label="Logout">
                         <LogOut className="w-4 h-4" />
                     </button>
                 </div>

@@ -448,7 +448,12 @@ class OwnerService {
 
     getProfile(req) {
         const ownerId = this.resolveOwnerId(req);
-        return db.ownerProfile ? { ...db.ownerProfile, id: ownerId } : { id: ownerId, name: 'Lina', role: 'Facility Owner' };
+        const base = db.ownerProfile ? { ...db.ownerProfile } : { name: 'Lina', role: 'Facility Owner' };
+        if (req.user) {
+            base.name = req.user.name;
+            base.email = req.user.email;
+        }
+        return { ...base, id: ownerId };
     }
 
     updateProfile(req) {

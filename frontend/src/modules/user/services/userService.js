@@ -1,19 +1,10 @@
 // Frontend Service connecting to Backend REST APIs for Member 1 (User Module)
 
-const API_BASE_URL = 'http://localhost:5000/api/user';
+import { apiRequest } from '../../../shared/api/client';
 
 async function request(endpoint, options = {}) {
   try {
-    const res = await fetch(`${API_BASE_URL}${endpoint}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-      },
-      ...options
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || 'API request failed');
-    return data.data;
+    return await apiRequest(`/user${endpoint}`, options);
   } catch (err) {
     console.error(`API Error [${endpoint}]:`, err);
     throw err;
