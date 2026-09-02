@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useLogout } from '../../../auth/hooks/useLogout';
 import { 
   Home, Search, CalendarCheck, Users, Activity, Heart, Wallet, 
   Star, MessageSquare, Settings, LogOut, MapPin, Gift, Menu 
@@ -7,6 +8,7 @@ import {
 
 export const UserSidebar = ({ unreadCount = 2 }) => {
   const location = useLocation();
+  const logout = useLogout();
 
   const navItems = [
     { label: 'Home', icon: Home, path: '/user' },
@@ -82,11 +84,15 @@ export const UserSidebar = ({ unreadCount = 2 }) => {
           <Gift className="w-12 h-12 text-emerald-400 opacity-80 absolute -right-1 -bottom-1 rotate-12 pointer-events-none" />
         </div>
 
-        {/* Logout (UI item) */}
-        <div className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-500 cursor-pointer hover:text-slate-800 transition">
-          <LogOut className="w-4 h-4 text-slate-400" />
+        {/* Logout */}
+        <button
+          type="button"
+          onClick={logout}
+          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-slate-500 cursor-pointer hover:text-rose-600 hover:bg-rose-50 transition"
+        >
+          <LogOut className="w-4 h-4" />
           <span>Logout</span>
-        </div>
+        </button>
       </div>
     </aside>
   );

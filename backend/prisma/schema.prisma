@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Central account model shared by USER, OWNER and ADMIN roles.
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         String   @default("USER") // USER | OWNER | ADMIN
+  isVerified   Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  otps OtpToken[]
+}
+
+// One-time codes for email verification. Only a hash of the code is stored.
+model OtpToken {
+  id        String    @id @default(cuid())
+  userId    String
+  codeHash  String
+  purpose   String    @default("VERIFY_EMAIL")
+  expiresAt DateTime
+  usedAt    DateTime?
+  attempts  Int       @default(0)
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, purpose])
+}

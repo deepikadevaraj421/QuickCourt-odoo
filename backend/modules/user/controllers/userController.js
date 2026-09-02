@@ -198,7 +198,8 @@ const userController = {
   getProfile: (req, res) => {
     try {
       const profile = userService.getUserProfile('usr_deepika');
-      res.json({ success: true, message: 'User profile retrieved', data: profile });
+      const merged = req.user ? { ...profile, name: req.user.name, email: req.user.email } : profile;
+      res.json({ success: true, message: 'User profile retrieved', data: merged });
     } catch (err) {
       res.status(500).json({ success: false, message: err.message });
     }
